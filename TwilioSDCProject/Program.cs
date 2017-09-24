@@ -16,13 +16,25 @@ namespace TwilioSDCProject
                 UrlReservations = new UrlReservations() { CreateAutomatically = true }
             };
 
-            using (var host = new NancyHost(new Uri("http://localhost:80"), new DefaultNancyBootstrapper(), hostConfigs))
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromMinutes(1);
+
+            var timer = new System.Threading.Timer((e) =>
+            {
+                MessageCollector.SaveMessages();
+                MessageCollector.LoadMessages();
+            }, null, startTimeSpan, periodTimeSpan);
+
+            using (var host = new NancyHost(new Uri("http://localhost:8080"), new DefaultNancyBootstrapper(), hostConfigs))
             {
                 host.Start();
-                Console.WriteLine("Running on http://localhost:80");
+                Console.WriteLine("Running on http://localhost:8080");
                 Console.ReadLine();
                 host.Stop();
             }
+
+            
+           
         }
     }
 }

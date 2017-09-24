@@ -32,6 +32,14 @@ namespace TwilioSDCProject
             string From = qscoll["From"] ?? null;
             string Body = qscoll["Body"] ?? null;
             string Sid = qscoll["AccountSid"] ?? null;
+            List<Uri> urls = new List<Uri> ();
+
+            string uri0 = qscoll["MediaUrl0"] ?? null;
+            if (uri0 != null)
+            {
+                urls.Add(new Uri(uri0));
+            }
+
             if(Sid != "AC1265576a3cee850ecfea3fb83b8ec134") { return; }
 
             Console.WriteLine("From: " + From + " Body: " + Body);
@@ -48,27 +56,78 @@ namespace TwilioSDCProject
             {
                 
                 var l = GeocodingManager.GetMessagesFromAddress(parsed[1]);
-                foreach(Message m in l)
+                if (l.Count == 0)
                 {
-                    SendSMS("Message: " + m.Body + " | Left at: "+m.Date.ToShortDateString(),
+                    SendSMS("No messages hidden at: " + GeocodingManager.ParseAddress(parsed[1]).FormattedAddress,
                         From);
                 }
+                else
+                {
+                    SendSMS("Here are all the messages hidden at: " + GeocodingManager.ParseAddress(parsed[1]).FormattedAddress,
+                        From);
+                    foreach (Message m in l)
+                    {
+                        if (m.MediaUrl != "")
+                        {
+                            var muris = new List<Uri>();
+                            muris.Add(new Uri(m.MediaUrl));
+
+                            SendSMS("Message: " + m.Body + " | Left at: " + m.Date.ToShortTimeString() + " " + m.Date.ToShortDateString(),
+                            From, muris);
+                        }
+                        else
+                        {
+                            SendSMS("Message: " + m.Body + " | Left at: " + m.Date.ToShortTimeString() + " " + m.Date.ToShortDateString(),
+                            From);
+                        }
+                        
+                    }
+                }
+                
 
             }
             else if (parsed[0].Contains("submit"))
             {
                 string address = parsed[2];
                 Message m = new Message(parsed[1]);
+                
+                if (urls.Count > 0)
+                {
+                    SendSMS("Message posted at " + GeocodingManager.ParseAddress(parsed[2]).FormattedAddress,
+                        From);
+                    m.MediaUrl = urls[0].ToString();
+                }
+                else
+                {
+                    SendSMS("Message posted at " + GeocodingManager.ParseAddress(parsed[2]).FormattedAddress,
+                        From);
+                }
+
                 GeocodingManager.AddMessageAtAddress(address, m);
+
             }
         }
 
-        static void SendSMS(string message, string target)
+        static void SendSMS(string message, string target, List<Uri> mediaURI = null)
         {
-            var m = MessageResource.Create(
+            if (mediaURI != null)
+            {
+                var m = MessageResource.Create(
+                    to: new PhoneNumber(target),
+                    from: new PhoneNumber("+1 424-377-7497 "),
+                    body: message,
+                    mediaUrl: mediaURI
+                    );
+            }
+            else
+            {
+                var m = MessageResource.Create(
                 to: new PhoneNumber(target),
                 from: new PhoneNumber("+1 424-377-7497 "),
-                body: message);
+                body: message
+                );
+            }
+            
         }
     }
 }

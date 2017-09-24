@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace TwilioSDCProject
 {
+    [Serializable]
     public class Message
     {
 
         public string Body { get; set; }
         public DateTime Date { get; set; }
-
+        public string MediaUrl { get; set; }
         public Message(string body)
         {
             this.Body = body;

@@ -15,7 +15,27 @@ namespace TwilioSDCProject
 
         static MessageCollector()
         {
-            MessageCollection = new Dictionary<Address, Message>();
+            LoadMessages();
+        }
+
+        public static void SaveMessages()
+        {
+            SaveLoadMessages.SaveMessages(MessageCollection);
+            Console.WriteLine("Saved {0} messages to file: SavedMessages.hm", MessageCollection.Count);
+        }
+
+        public static void LoadMessages()
+        {
+            MessageCollection = SaveLoadMessages.LoadMessagesFromFile();
+            if (MessageCollection != null)
+            {
+                Console.WriteLine("Loaded {0} messages from file: SavedMessages.hm", MessageCollection.Count);
+            }
+            else
+            {
+                MessageCollection = new Dictionary<Address, Message>();
+                Console.WriteLine("Initialized MessageCollection");
+            }
         }
         public static void AddMessageAtLocation(Address location, Message message)
         {

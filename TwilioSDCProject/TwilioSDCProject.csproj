@@ -71,8 +71,10 @@
     <Compile Include="GeocodingManager.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageCollector.cs" />
+    <Compile Include="ObjectSerializer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveLoadMessages.cs" />
     <Compile Include="SMSManager.cs" />
   </ItemGroup>
   <ItemGroup>
