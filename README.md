@@ -1,4 +1,5 @@
 # Hidden Messages
+<img src="https://i.imgur.com/Yet5Ec3.png" width="275" />
 Project for UW Software Development Club Fall 2017 hackathon: a twilio service to discover hidden messages based on geolocation.
 
 ## What it does
