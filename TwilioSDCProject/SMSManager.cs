@@ -15,9 +15,9 @@ namespace TwilioSDCProject
     public class SMSManager : Nancy.NancyModule
     {
         
-        const string accountSid = "AC1265576a3cee850ecfea3fb83b8ec134";
+        const string accountSid = "";
         
-        const string authToken = "614194502bc49a7ade804b2f39f0da45";
+        const string authToken = "";
 
         public SMSManager()
         {
