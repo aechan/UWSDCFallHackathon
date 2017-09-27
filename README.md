@@ -22,6 +22,10 @@ C#, Twilio API, Google Geocoding API, and an Amazon EC2 server.
 
 ## To build it yourself
 
+First, you will need to input your Twilio accound SID and auth token into the two const strings in `SMSManager.cs`
+
+then, 
+
 ```
 cd TwilioSDCProject
 nuget restore
